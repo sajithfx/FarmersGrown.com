@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmersGrown - Orange County's Local Farm Box Delivery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2d5e2d;
+            --light-green: #4caf50;
+            --cream: #f8f6f0;
+            --earth-brown: #8b4513;
+            --text-dark: #333;
+            --text-light: #666;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8f6f0 0%, #e8f5e8 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--earth-brown);
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 300;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Supplier Section */
+        .supplier-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .supplier-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .supplier-section p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .supplier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .supplier-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .supplier-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .supplier-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .supplier-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .supplier-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .supplier-btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .supplier-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 94, 45, 0.3);
+        }
+
+        /* Waitlist Section */
+        .waitlist-section {
+            background: white;
+            padding: 4rem 2rem;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .waitlist-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .waitlist-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--light-green);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 94, 45, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .form-message {
+            display: none;
+            margin-top: 1rem;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .form-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Cities Section */
+        .cities-section {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .cities-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--primary-green);
+        }
+
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .city-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            font-weight: 500;
+        }
+
+        .coming-soon {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-light);
+            border-top: 1px solid #e0e0e0;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .features,
+            .supplier-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cities-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .supplier-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">🌱 Farmers<span>Grown</span></div>
+            <p class="tagline">Orange County's Hyper-Local Farm Box Delivery</p>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Local Farm-Fresh Produce & Artisan Delights. Delivered.</h1>
+            <p>Unpack the flavor of your local food scene. Each box is a curated collection of the freshest seasonal
+                produce and unique finds from talented local artisans.</p>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📦</div>
+                <h3>Subscription Boxes</h3>
+                <p>Regular deliveries of seasonal produce, artisan goods, and local specialties straight from Orange
+                    County farms to your doorstep.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎁</div>
+                <h3>Seasonal & Gift Boxes</h3>
+                <p>Perfectly curated boxes for special occasions, holidays, or as memorable gifts featuring the best of
+                    local harvests.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI-Powered Meal Planning</h3>
+                <p>Smart recipe suggestions and meal plans tailored to your box contents, making cooking with seasonal
+                    ingredients effortless.</p>
+            </div>
+        </section>
+
+        <!-- Supplier Section -->
+        <section class="supplier-section">
+            <h2>Join Our Local Supplier Network</h2>
+            <p>Are you a local farmer, artisan, or backyard grower? Partner with FarmersGrown to reach more customers
+                and share your products with the Orange County community.</p>
+
+            <div class="supplier-grid">
+                <div class="supplier-card">
+                    <div class="supplier-icon">🚜</div>
+                    <h3>Local Farmers</h3>
+                    <p>Connect your farm directly with local families. Sell your fresh produce through our platform and
+                        reach customers throughout Orange County.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSesAy3y4NRV596KAQxfD4zbdhUkU2DAvorVEyQIKePb7abnPQ/viewform?usp=header"
+                        target="_blank" class="supplier-btn">Apply as Farmer</a>
+                </div>
+
+                <div class="supplier-card">
+                    <div class="supplier-icon">🎨</div>
+                    <h3>Local Artisans</h3>
+                    <p>Showcase your handmade goods, preserves, baked items, and specialty products to a community that
+                        values local craftsmanship.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfD_iQpAkVLOMjwOyJpcLMOpbf21h1RAvmAsn7Opa6kRc5ifQ/viewform?usp=header"
+                        target="_blank" class="supplier-btn">Apply as Artisan</a>
+                </div>
+
+                <div class="supplier-card">
+                    <div class="supplier-icon">🏡</div>
+                    <h3>Backyard Growers</h3>
+                    <p>Turn your garden surplus into income. Share your homegrown fruits, vegetables, herbs, and edible
+                        flowers with neighbors.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeu2yRxbSx4dK1oxqigfWcPlTe30GjzHWMayD7iI7ckJMtxbQ/viewform?usp=header"
+                        target="_blank" class="supplier-btn">Apply as Grower</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waitlist Section -->
+        <section class="waitlist-section">
+            <h2>Be the First to Experience FarmersGrown</h2>
+            <p>Join our waitlist for exclusive launch offers and early access</p>
+
+            <form class="signup-form" action="https://formspree.io/f/mqadggqb" method="POST">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <select id="city" required>
+                        <option value="">Select Your City</option>
+                        <option>Stanton CA</option>
+                        <option>Anaheim CA</option>
+                        <option>Buena Park CA</option>
+                        <option>Cypress CA</option>
+                        <option>Garden Grove CA</option>
+                        <option>Huntington Beach CA</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" id="submitButton">Join Waitlist & Get 25% Off</button>
+
+                <div id="formMessage" class="form-message"></div>
+            </form>
+
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+                First 50 subscribers get special founding member benefits
+            </p>
+        </section>
+
+        <!-- Cities Section -->
+        <section class="cities-section">
+            <h2>Now Delivering To</h2>
+            <div class="cities-grid">
+                <div class="city-card">Stanton CA</div>
+                <div class="city-card">Anaheim CA</div>
+                <div class="city-card">Buena Park CA</div>
+                <div class="city-card">Cypress CA</div>
+                <div class="city-card">Huntington Beach CA</div>
+            </div>
+            <p class="coming-soon">More Orange County cities coming soon!</p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 FarmersGrown. Bringing Orange County farms to your table.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Enhanced form submission with multiple options
+        document.getElementById('waitlistForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const city = document.getElementById('city').value;
+            const submitButton = document.getElementById('submitButton');
+            const messageDiv = document.getElementById('formMessage');
+
+            // Disable button and show loading state
+            submitButton.textContent = 'Joining...';
+            submitButton.disabled = true;
+            messageDiv.style.display = 'none';
+
+            // Store in localStorage for now (temporary solution)
+            let waitlistData = JSON.parse(localStorage.getItem('farmersgrown_waitlist') || '[]');
+
+            // Check if email already exists
+            const emailExists = waitlistData.some(item => item.email === email);
+
+            if (!emailExists) {
+                waitlistData.push({
+                    name: name,
+                    email: email,
+                    city: city,
+                    timestamp: new Date().toISOString(),
+                    source: 'website'
+                });
+                localStorage.setItem('farmersgrown_waitlist', JSON.stringify(waitlistData));
+            }
+
+            // Prepare email content with all form data
+            const subject = encodeURIComponent('FarmersGrown Waitlist Signup');
+            const body = encodeURIComponent(`New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCity: ${city}\nTimestamp: ${new Date().toISOString()}\nSource: Website\n\nPlease add to FarmersGrown mailing list.`);
+
+            // Show success message
+            messageDiv.innerHTML = `
+                <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">
+                    <strong>✅ Success!</strong> You've been added to our waitlist.<br>
+                    <small>We'll email you when FarmersGrown launches in ${city}.</small>
+                </div>
+            `;
+            messageDiv.style.display = 'block';
+
+            // Open email client for manual processing
+            setTimeout(() => {
+                const mailtoLink = `mailto:sajithfx@gmail.com?subject=${subject}&body=${body}`;
+                window.open(mailtoLink);
+            }, 1000);
+
+            // Reset form
+            this.reset();
+            submitButton.textContent = 'Join Waitlist & Get 25% Off';
+            submitButton.disabled = false;
+
+            // Log for debugging (check browser console)
+            console.log('FarmersGrown Waitlist signup:', { name, email, city, timestamp: new Date().toISOString() });
+        });
+
+        // Function to export waitlist data (call from browser console)
+        window.exportWaitlist = function () {
+            const waitlist = JSON.parse(localStorage.getItem('farmersgrown_waitlist') || '[]');
+            console.table(waitlist);
+
+            // Create downloadable CSV
+            const csvContent = "data:text/csv;charset=utf-8,"
+                + "Name,Email,City,Timestamp,Source\n"
+                + waitlist.map(item => `${item.name},${item.email},${item.city},${item.timestamp},${item.source}`).join('\n');
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "farmersgrown_waitlist.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function () {
+            const featureCards = document.querySelectorAll('.feature-card');
+            const supplierCards = document.querySelectorAll('.supplier-card');
+
+            featureCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+
+            supplierCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, (index + featureCards.length) * 200);
+            });
+        });
+    </script>
+</body>
+
+</html>
