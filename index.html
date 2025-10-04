@@ -280,6 +280,12 @@
             border: 1px solid #c3e6cb;
         }
 
+        .form-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
         /* Cities Section */
         .cities-section {
             text-align: center;
@@ -429,15 +435,15 @@
             <h2>Be the First to Experience FarmersGrown</h2>
             <p>Join our waitlist for exclusive launch offers and early access</p>
 
-            <form class="signup-form" action="https://formspree.io/f/xnngzjdg" method="POST">
+            <form id="waitlistForm" class="signup-form" action="https://formspree.io/f/xnngzjdg" method="POST">
                 <div class="form-group">
-                    <input type="text" id="name" placeholder="Your Name" required>
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" id="email" placeholder="Your Email" required>
+                    <input type="email" id="email" name="email" placeholder="Your Email" required>
                 </div>
                 <div class="form-group">
-                    <select id="city" required>
+                    <select id="city" name="city" required>
                         <option value="">Select Your City</option>
                         <option>Stanton CA</option>
                         <option>Anaheim CA</option>
@@ -487,84 +493,62 @@
             });
         });
 
-        // Enhanced form submission with multiple options
-        document.getElementById('waitlistForm').addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Formspree form submission handler
+        var form = document.getElementById('waitlistForm');
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const city = document.getElementById('city').value;
-            const submitButton = document.getElementById('submitButton');
-            const messageDiv = document.getElementById('formMessage');
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            var submitButton = document.getElementById('submitButton');
+            var messageDiv = document.getElementById('formMessage');
+            var city = document.getElementById('city').value;
 
             // Disable button and show loading state
             submitButton.textContent = 'Joining...';
             submitButton.disabled = true;
             messageDiv.style.display = 'none';
 
-            // Store in localStorage for now (temporary solution)
-            let waitlistData = JSON.parse(localStorage.getItem('farmersgrown_waitlist') || '[]');
+            var data = new FormData(event.target);
 
-            // Check if email already exists
-            const emailExists = waitlistData.some(item => item.email === email);
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // Success message
+                    messageDiv.className = 'form-message success';
+                    messageDiv.innerHTML = `
+                        <strong>✅ Success!</strong> You've been added to our waitlist.<br>
+                        <small>We'll email you when FarmersGrown launches in ${city}.</small>
+                    `;
+                    messageDiv.style.display = 'block';
+                    form.reset();
+                } else {
+                    response.json().then(data => {
+                        messageDiv.className = 'form-message error';
+                        if (Object.hasOwn(data, 'errors')) {
+                            messageDiv.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                        } else {
+                            messageDiv.innerHTML = "Oops! There was a problem submitting your form";
+                        }
+                        messageDiv.style.display = 'block';
+                    })
+                }
+            }).catch(error => {
+                messageDiv.className = 'form-message error';
+                messageDiv.innerHTML = "Oops! There was a problem submitting your form";
+                messageDiv.style.display = 'block';
+            }).finally(() => {
+                // Reset button
+                submitButton.textContent = 'Join Waitlist & Get 25% Off';
+                submitButton.disabled = false;
+            });
+        }
 
-            if (!emailExists) {
-                waitlistData.push({
-                    name: name,
-                    email: email,
-                    city: city,
-                    timestamp: new Date().toISOString(),
-                    source: 'website'
-                });
-                localStorage.setItem('farmersgrown_waitlist', JSON.stringify(waitlistData));
-            }
-
-            // Prepare email content with all form data
-            const subject = encodeURIComponent('FarmersGrown Waitlist Signup');
-            const body = encodeURIComponent(`New waitlist signup:\n\nName: ${name}\nEmail: ${email}\nCity: ${city}\nTimestamp: ${new Date().toISOString()}\nSource: Website\n\nPlease add to FarmersGrown mailing list.`);
-
-            // Show success message
-            messageDiv.innerHTML = `
-                <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #c3e6cb;">
-                    <strong>✅ Success!</strong> You've been added to our waitlist.<br>
-                    <small>We'll email you when FarmersGrown launches in ${city}.</small>
-                </div>
-            `;
-            messageDiv.style.display = 'block';
-
-            // Open email client for manual processing
-            setTimeout(() => {
-                const mailtoLink = `mailto:sajithfx@gmail.com?subject=${subject}&body=${body}`;
-                window.open(mailtoLink);
-            }, 1000);
-
-            // Reset form
-            this.reset();
-            submitButton.textContent = 'Join Waitlist & Get 25% Off';
-            submitButton.disabled = false;
-
-            // Log for debugging (check browser console)
-            console.log('FarmersGrown Waitlist signup:', { name, email, city, timestamp: new Date().toISOString() });
-        });
-
-        // Function to export waitlist data (call from browser console)
-        window.exportWaitlist = function () {
-            const waitlist = JSON.parse(localStorage.getItem('farmersgrown_waitlist') || '[]');
-            console.table(waitlist);
-
-            // Create downloadable CSV
-            const csvContent = "data:text/csv;charset=utf-8,"
-                + "Name,Email,City,Timestamp,Source\n"
-                + waitlist.map(item => `${item.name},${item.email},${item.city},${item.timestamp},${item.source}`).join('\n');
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "farmersgrown_waitlist.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        };
+        form.addEventListener("submit", handleSubmit);
 
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function () {
@@ -595,6 +579,5 @@
         });
     </script>
 </body>
-
 
 </html>
