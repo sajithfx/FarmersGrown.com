@@ -399,6 +399,32 @@
                 font-size: 2rem;
             }
         }
+		
+		textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.3s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--light-green);
+}
+
+#productsGroup label,
+#phoneGroup label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: block;
+    color: var(--text-dark);
+}
+
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
@@ -505,14 +531,16 @@
     </div>
 
     <!-- Product Field (hidden until role selected) -->
-    <div class="form-group" id="productsGroup" style="display: none;">
-        <textarea id="products" name="products" placeholder="List your products (e.g., jams, baked goods, produce)" rows="3"></textarea>
-    </div>
+   <div class="form-group" id="productsGroup" style="display: none;">
+    <label for="products">Your Products</label>
+    <textarea id="products" name="products" placeholder="e.g., jams, baked goods, dried fruit, produce"></textarea>
+</div>
 
-    <!-- Phone Field (hidden until role selected) -->
-    <div class="form-group" id="phoneGroup" style="display: none;">
-        <input type="text" id="phone" name="phone" placeholder="Your Phone Number">
-    </div>
+<div class="form-group" id="phoneGroup" style="display: none;">
+    <label for="phone">Your Phone Number</label>
+    <input type="text" id="phone" name="phone" placeholder="(555) 123-4567">
+</div>
+
 
     <!-- Customer City Field -->
     <div class="form-group" id="cityGroup">
