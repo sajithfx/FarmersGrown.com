@@ -483,28 +483,55 @@
             <h2>Be the First to Experience FarmersGrown</h2>
             <p>Join our waitlist for exclusive launch offers and early access</p>
 
-            <form id="waitlistForm" class="signup-form" action="https://formspree.io/f/xnngzjdg" method="POST">
-                <div class="form-group">
-                    <input type="text" id="name" name="name" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="email" name="email" placeholder="Your Email" required>
-                </div>
-                <div class="form-group">
-                    <select id="city" name="city" required>
-                        <option value="">Select Your City</option>
-                        <option>Stanton CA</option>
-                        <option>Anaheim CA</option>
-                        <option>Buena Park CA</option>
-                        <option>Cypress CA</option>
-                        <option>Garden Grove CA</option>
-                        <option>Huntington Beach CA</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn" id="submitButton">Join Waitlist & Get 25% Off</button>
+   <form id="waitlistForm" class="signup-form" action="https://formspree.io/f/xnngzjdg" method="POST">
 
-                <div id="formMessage" class="form-message"></div>
-            </form>
+    <div class="form-group">
+        <input type="text" id="name" name="name" placeholder="Your Name" required>
+    </div>
+
+    <div class="form-group">
+        <input type="email" id="email" name="email" placeholder="Your Email" required>
+    </div>
+
+    <!-- Role Selection -->
+    <div class="form-group">
+        <select id="role" name="role" required>
+            <option value="">I am a…</option>
+            <option value="Customer">Customer</option>
+            <option value="Artisan">Artisan</option>
+            <option value="Local Farmer">Local Farmer</option>
+            <option value="CFO">Cottage Food Operator (CFO)</option>
+        </select>
+    </div>
+
+    <!-- Product Field (hidden until role selected) -->
+    <div class="form-group" id="productsGroup" style="display: none;">
+        <textarea id="products" name="products" placeholder="List your products (e.g., jams, baked goods, produce)" rows="3"></textarea>
+    </div>
+
+    <!-- Phone Field (hidden until role selected) -->
+    <div class="form-group" id="phoneGroup" style="display: none;">
+        <input type="text" id="phone" name="phone" placeholder="Your Phone Number">
+    </div>
+
+    <!-- Customer City Field -->
+    <div class="form-group" id="cityGroup">
+        <select id="city" name="city">
+            <option value="">Select Your City</option>
+            <option>Stanton CA</option>
+            <option>Anaheim CA</option>
+            <option>Buena Park CA</option>
+            <option>Cypress CA</option>
+            <option>Garden Grove CA</option>
+            <option>Huntington Beach CA</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn" id="submitButton">Join Waitlist & Get 25% Off</button>
+
+    <div id="formMessage" class="form-message"></div>
+</form>
+
 
             <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
                 First 25 subscribers get special founding member benefits
@@ -532,105 +559,87 @@
         </footer>
     </div>
 
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
+   <script>
+// Role-based dynamic form
+const roleSelect = document.getElementById("role");
+const productsGroup = document.getElementById("productsGroup");
+const phoneGroup = document.getElementById("phoneGroup");
+const cityGroup = document.getElementById("cityGroup");
+const submitButton = document.getElementById("submitButton");
 
-        // Formspree form submission handler
-        var form = document.getElementById('waitlistForm');
+roleSelect.addEventListener("change", () => {
+    const role = roleSelect.value;
 
-        async function handleSubmit(event) {
-            event.preventDefault();
+    if (role === "Customer") {
+        productsGroup.style.display = "none";
+        phoneGroup.style.display = "none";
+        cityGroup.style.display = "block";
+        submitButton.textContent = "Join Waitlist & Get 25% Off";
+    } 
+    else {
+        // Artisan, Farmer, CFO
+        productsGroup.style.display = "block";
+        phoneGroup.style.display = "block";
+        cityGroup.style.display = "none";
 
-            var submitButton = document.getElementById('submitButton');
-            var messageDiv = document.getElementById('formMessage');
-            var city = document.getElementById('city').value;
-
-            // Disable button and show loading state
-            submitButton.textContent = 'Joining...';
-            submitButton.disabled = true;
-            messageDiv.style.display = 'none';
-
-            var data = new FormData(event.target);
-
-            fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    // Success message
-                    messageDiv.className = 'form-message success';
-                    messageDiv.innerHTML = `
-                        <strong>✅ Success!</strong> You've been added to our waitlist.<br>
-                        <small>We'll email you when FarmersGrown launches in ${city}.</small>
-                    `;
-                    messageDiv.style.display = 'block';
-                    form.reset();
-                } else {
-                    response.json().then(data => {
-                        messageDiv.className = 'form-message error';
-                        if (Object.hasOwn(data, 'errors')) {
-                            messageDiv.innerHTML = data["errors"].map(error => error["message"]).join(", ");
-                        } else {
-                            messageDiv.innerHTML = "Oops! There was a problem submitting your form";
-                        }
-                        messageDiv.style.display = 'block';
-                    })
-                }
-            }).catch(error => {
-                messageDiv.className = 'form-message error';
-                messageDiv.innerHTML = "Oops! There was a problem submitting your form";
-                messageDiv.style.display = 'block';
-            }).finally(() => {
-                // Reset button
-                submitButton.textContent = 'Join Waitlist & Get 25% Off';
-                submitButton.disabled = false;
-            });
+        if (role === "Artisan") {
+            submitButton.textContent = "Apply as Artisan";
+        } else if (role === "Local Farmer") {
+            submitButton.textContent = "Apply as Farmer";
+        } else if (role === "CFO") {
+            submitButton.textContent = "Apply as CFO";
         }
+    }
+});
 
-        form.addEventListener("submit", handleSubmit);
+// Form submission (same logic as before)
+var form = document.getElementById('waitlistForm');
 
-        // Add some interactive animations
-        document.addEventListener('DOMContentLoaded', function () {
-            const featureCards = document.querySelectorAll('.feature-card');
-            const supplierCards = document.querySelectorAll('.supplier-card');
+async function handleSubmit(event) {
+    event.preventDefault();
 
-            featureCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
+    var messageDiv = document.getElementById('formMessage');
+    messageDiv.style.display = 'none';
 
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
+    submitButton.textContent = "Submitting...";
+    submitButton.disabled = true;
 
-            supplierCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
+    var data = new FormData(event.target);
 
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, (index + featureCards.length) * 200);
-            });
-        });
-    </script>
+    fetch(event.target.action, {
+        method: form.method,
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(response => {
+        if (response.ok) {
+            messageDiv.className = 'form-message success';
+            messageDiv.innerHTML = `<strong>✅ Thank you!</strong> We received your submission.`;
+            form.reset();
+        } else {
+            messageDiv.className = 'form-message error';
+            messageDiv.innerHTML = "❌ There was an error submitting the form.";
+        }
+        messageDiv.style.display = 'block';
+    })
+    .catch(() => {
+        messageDiv.className = 'form-message error';
+        messageDiv.innerHTML = "❌ There was a problem submitting your form.";
+        messageDiv.style.display = 'block';
+    })
+    .finally(() => {
+        submitButton.textContent = "Submit";
+        submitButton.disabled = false;
+    });
+}
+
+form.addEventListener("submit", handleSubmit);
+</script>
+
 </body>
 
 </html>
+
 
 
 
